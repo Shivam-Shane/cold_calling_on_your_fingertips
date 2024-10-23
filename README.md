@@ -35,7 +35,7 @@ The system includes error handling mechanisms to manage cases where the email co
     ```
 ## Demo:
 
-![Demo Gif](demo\cold_calling_gif)
+![Demo Gif](demo/cold_calling_gif.gif)
 
 ## Logs:
 
