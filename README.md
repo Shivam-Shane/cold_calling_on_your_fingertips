@@ -33,6 +33,9 @@ The system includes error handling mechanisms to manage cases where the email co
     Follow the instructions here to enable the Gmail APP password
     https://support.google.com/mail/answer/185833?hl=en
     ```
+## Demo:
+
+![Demo Gif](demo\cold_calling_gif.gif)
 
 ## Logs:
 
