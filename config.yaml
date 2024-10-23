@@ -6,6 +6,6 @@ SMTP_SERVER: smtp.gmail.com
 SMTP_PORT: 587
 # Set up your email credentials
 SMTP_USERNAME: sk0551460@gmail.com
-SMTP_PASSWORD: htao qlqy ysex zqyb
+SMTP_PASSWORD: your_gmail_app_password_goes_here
 # Name of the Email Sender
 SENDER_NAME: Shivam
