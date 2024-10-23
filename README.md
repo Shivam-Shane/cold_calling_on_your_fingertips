@@ -23,6 +23,7 @@ The system includes error handling mechanisms to manage cases where the email co
     ```bash
     git clone https://github.com/Shivam-Shane/cold_calling_on_your_fingertips.git
     cd cold_calling
+    Creator database schema by running the `creator_database_schema.sql` script in your SQL Server.
     ```
 
 2. **Install dependencies**
