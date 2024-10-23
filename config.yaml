@@ -1,0 +1,11 @@
+#--------------- Define your email, file, and settings details here
+# Set up the IMAP connection
+IMAP_SERVER: imap.gmail.com
+IMAP_PORT: 993
+SMTP_SERVER: smtp.gmail.com
+SMTP_PORT: 587
+# Set up your email credentials
+SMTP_USERNAME: sk0551460@gmail.com
+SMTP_PASSWORD: htao qlqy ysex zqyb
+# Name of the Email Sender
+SENDER_NAME: Shivam
