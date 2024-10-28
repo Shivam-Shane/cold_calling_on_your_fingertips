@@ -29,6 +29,7 @@ urlpatterns = [
     path('preview/', views.preview_email, name='preview'),
     path('send/', views.send_email, name='send_email'),
     path('customize_email/', views.customize_email, name='customize_email'),
+    path('customize_secrets/', views.customize_secrets, name='customize_secrets')
 
 ]
 

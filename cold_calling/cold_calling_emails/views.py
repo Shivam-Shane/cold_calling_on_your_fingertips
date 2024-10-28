@@ -8,12 +8,14 @@ sys.path.append(root_path)
 from logger import logging
 from django.conf import settings
 import pypyodbc as odbc
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from gmail_connector import GmailFetcher
 from gmail_content_decomission import mail_content_handler
 from gmail_preview_content import preview_mail
 from database_connector import database_connector
 from customize_email_content import custom_email_content
+from utility import update_yaml,read_yaml
 
 get_email_details_object=custom_email_content()
 
@@ -144,3 +146,58 @@ def customize_email(request):
 
     # Render the template with the context
     return render(request, 'customize_email.html', context)
+
+def customize_secrets(request):
+    if request.method == 'POST':
+        try:
+            SENDER_NAME = request.POST['SENDER_NAME']
+            SMTP_USERNAME = request.POST['SMTP_USERNAME']
+            SMTP_PASSWORD = request.POST['SMTP_PASSWORD']        
+            DRIVER_NAME = request.POST['DRIVER_NAME']
+            SERVER_NAME = request.POST['SERVER_NAME']
+            DATABASE_NAME = request.POST['DATABASE_NAME']
+            USERNAME = request.POST['USERNAME']
+            PASSWORD = request.POST['PASSWORD']  
+            # Update the secrets details
+            update_yaml('config.yaml',
+                        {'SENDER_NAME': SENDER_NAME, 
+                        'SMTP_USERNAME': SMTP_USERNAME,
+                        'SMTP_PASSWORD': SMTP_PASSWORD, 
+                        'DRIVER_NAME': DRIVER_NAME,
+                            'SERVER_NAME': SERVER_NAME, 
+                        'DATABASE_NAME': DATABASE_NAME, 
+                        'USERNAME': USERNAME, 
+                        'PASSWORD': PASSWORD})
+            # Redirect to the same view after saving to refresh the data
+            messages.success(request, 'Secrets updated successfully!')
+
+            return redirect('customize_secrets')
+        except Exception as e:
+            logging.error("Error updating secrets: %s", e)
+            messages.error(request, f'An error occurred while updating the secrets: {str(e)}')
+        return redirect('customize_secrets')
+
+
+    else:
+        # Prepare the context for secrets
+        config=read_yaml('config.yaml')
+        SENDER_NAME = config['SENDER_NAME']
+        SMTP_USERNAME = config['SMTP_USERNAME']
+        SMTP_PASSWORD = config['SMTP_PASSWORD']        
+        DRIVER_NAME = config['DRIVER_NAME']
+        SERVER_NAME = config['SERVER_NAME']
+        DATABASE_NAME = config['DATABASE_NAME']
+        USERNAME = config['USERNAME']
+        PASSWORD = config['PASSWORD']
+        context = {'SENDER_NAME': SENDER_NAME, 
+                     'SMTP_USERNAME': SMTP_USERNAME,
+                       'SMTP_PASSWORD': SMTP_PASSWORD, 
+                       'DRIVER_NAME': DRIVER_NAME,
+                        'SERVER_NAME': SERVER_NAME, 
+                       'DATABASE_NAME': DATABASE_NAME, 
+                       'USERNAME': USERNAME, 
+                       'PASSWORD': PASSWORD}
+        
+
+    # Render the template with the context
+    return render(request, 'secrets.html', context)
