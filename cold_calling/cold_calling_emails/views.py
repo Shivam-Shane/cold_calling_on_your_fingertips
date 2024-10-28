@@ -16,6 +16,7 @@ from gmail_preview_content import preview_mail
 from database_connector import database_connector
 from customize_email_content import custom_email_content
 from utility import update_yaml,read_yaml
+from datetime import datetime
 
 get_email_details_object=custom_email_content()
 
@@ -68,21 +69,27 @@ def preview_email(request):
 
 def send_email(request):
     if request.method == 'POST':
-        logging.info("Sending email")
-        subject = request.POST['subject']
-        recipients = request.POST['recipients'].split(',')
-        recipient_name=request.POST['recipient_name']        
-        company_name = request.POST['company_name']
-        company_work_related = request.POST['summary']
-        # Get the resume path from the session
-        resume_path = request.session.get('resume_path')
-        logging.info(f"Retrieved Resume path from session: {resume_path}")
+        try:
+            logging.info("Sending email")
+            subject = request.POST['subject']
+            recipients = request.POST['recipients'].split(',')
+            recipient_name=request.POST['recipient_name']        
+            company_name = request.POST['company_name']
+            company_work_related = request.POST['summary']
+            # Get the resume path from the session
+            resume_path = request.session.get('resume_path')
+            logging.info(f"Retrieved Resume path from session: {resume_path}")
 
-        body=mail_content_handler(recipient_name, company_name, company_work_related)
+            body=mail_content_handler(recipient_name, company_name, company_work_related)
 
-        GM=GmailFetcher()
-        GM.email_sender(recipients,subject, body,attachments=resume_path)
-        # Save the email details in the database
+            GM=GmailFetcher()
+            GM.email_sender(recipients,subject, body,attachments=resume_path)
+            messages.success(request, f'Mail Sent successfully! at {datetime.now()}')
+            # Save the email details in the database
+        except Exception as e:
+            logging.error("Error sending mail: %s", e)
+            messages.error(request, f'An error occurred while sending mail: {str(e)}')
+            return redirect('customize_secrets')
         try:
             connection = database_connector()
             cursor = connection.cursor()

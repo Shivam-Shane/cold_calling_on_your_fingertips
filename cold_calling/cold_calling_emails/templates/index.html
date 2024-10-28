@@ -102,6 +102,26 @@
         .dropdown a:hover {
             background-color: #f0f0f0;
         }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        /* Success message styles */
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        /* Error message styles */
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
     </style>
 </head>
 <body>
@@ -113,6 +133,15 @@
         <a href="{% url 'customize_secrets' %}">Customize Secrets</a>
 
     </div>
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="container">
         <h1>Cold Calling</h1>
         <form method="POST" enctype="multipart/form-data" action="{% url 'preview' %}">
