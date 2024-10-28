@@ -48,21 +48,13 @@ def update_yaml(path_to_yaml, updates):
     try:
         # Read the YAML file
         yaml_data = read_yaml(path_to_yaml)
-        accept_able_yaml =read_yaml("config_acceptable_values.yaml")
-
+        logging.info(updates)
         # Check each key in the dictionary and update if it is present
         for key, new_value in updates.items():
-            if key in yaml_data and key in accept_able_yaml: # if keys matched in both config files
-                if new_value in accept_able_yaml[key]:
-                                                            # update the existing value
-                    yaml_data[key] = new_value
-                    logging.info(f"Updated '{key}' to '{new_value}'.")
-            elif key in yaml_data and key not in accept_able_yaml:  # if only matched in config files and not in acceptable update that
-                yaml_data[key] = new_value
-                
-                logging.info(f"Updated '{key}' to '{new_value}'.")
-            else:
-                logging.warning(f"Key '{key}' not found. No update performed for this key.")
+           
+            # update the existing value
+            yaml_data[key] = new_value
+            logging.debug(f"Updated '{key}' to '{new_value}'.")
         
         # Create a temporary file
         with tempfile.NamedTemporaryFile(delete=False, mode='w', newline='', encoding='utf-8') as temp_file:
