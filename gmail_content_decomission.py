@@ -1,7 +1,28 @@
+from customize_email_content import custom_email_content
+get_email_details_object=custom_email_content()
+from utility import read_yaml
+
 def mail_content_handler(recipient_name, company_name, company_work_related):
         """Handles mail body to process like html content"""
+        result=get_email_details_object.get_email_content()
+        config=read_yaml('config.yaml')
         if recipient_name=="":
                 recipient_name="Hiring Manager" # default recipient
+        # Define the social media links
+        Sender_name=result[0]['your_name']
+        Sender_phone=result[0]['phone_no']
+        Sender_email=config['SMTP_USERNAME']
+        
+        links = {
+        'GitHub': result[0]['github_link'],
+        'LinkedIn': result[0]['linkedin_link'],
+        'Portfolio': result[0]['portfolio_link']
+                }
+        signature_parts = [f'<a href="{url}">{name}</a>' for name, url in links.items() if url]
+
+        finalsignature=str()
+        for signature_part in signature_parts:
+                finalsignature += signature_part + " | "
 
         body=f"""
                 <html>
@@ -11,7 +32,7 @@ def mail_content_handler(recipient_name, company_name, company_work_related):
                         and I am an aspiring Machine Learning Engineer with nearly three years of experience in IT, 
                         focusing on developing and deploying scalable machine learning models and workflows. 
                         I came across your organization {company_name} and was impressed by your innovative work in the field 
-                        of AI/GEN {company_work_related}. I would love to explore any opportunities where I could contribute my skills in AI and automation.</p>
+                        of {company_work_related}. I would love to explore any opportunities where I could contribute my skills in AI and automation.</p>
                         
                         <p>Throughout my career, I have built expertise in Python, TensorFlow, and Scikit-learn, as well as DevOps tools such as Docker and Kubernetes. In my most recent role at Indus Valley Partners, I led the development of a custom monitoring system that automated the categorization of critical service alerts, reducing response times by 77%. I have also worked on machine learning projects, including an AI-powered image caption generator and an automated text summarization tool, demonstrating a track record of delivering impactful solutions.</p>
                         
@@ -20,13 +41,11 @@ def mail_content_handler(recipient_name, company_name, company_work_related):
                         <p>Thank you for your time and consideration. I look forward to your response.</p>
 
                         <p>Warm regards,<br/>
-                        Shivam<br/>
-                        ML Engineer<br/>
-                        Phone: +91-98155-44235<br/>
-                        Email: <a href="mailto:sk0551460@gmail.com">sk0551460@gmail.com</a><br/>
-                        <a href="https://github.com/your-github-profile">GitHub</a> | 
-                        <a href="https://www.linkedin.com/in/your-linkedin-profile">LinkedIn</a> | 
-                        <a href="https://your-portfolio-site.com">Portfolio</a></p>
+                        {Sender_name}<br/>
+                        
+                        Phone: {Sender_phone}<br/>
+                        Email: <a href="mailto:{Sender_email}">{Sender_email}</a><br/>
+                        {finalsignature}
                         
 
 
