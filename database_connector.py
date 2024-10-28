@@ -24,7 +24,7 @@ def database_connector():
             UID={USERNAME};
             PWD={PASSWORD};
             """
-
+            logging.debug("Connection string: %s", connection_string)
             _connection = odbc.connect(connection_string)
             logging.info("Connection to database established successfully.")
         except odbc.Error as e:
