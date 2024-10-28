@@ -73,13 +73,13 @@ class GmailFetcher():
 
         except (socket.gaierror, socket.timeout) as net_err:
             logging.error(f"Network issue while connecting to SMTP server: {str(net_err)}")
-            raise net_err
+            raise RuntimeError("Network issue while connecting to SMTP server: " + str(net_err))
         except ssl.SSLError as ssl_err:
             logging.error(f"SSL error while connecting to SMTP server: {str(ssl_err)}")
-            raise ssl_err
+            raise RuntimeError("SSL error while connecting to SMTP server:" +str(ssl_err))
         except smtplib.SMTPException as smtp_err:
             logging.error(f"SMTP error: {str(smtp_err)}")
-            raise smtp_err
+            raise RuntimeError("SMTP error: " + str(smtp_err))
         except Exception as e:
             logging.error(f"Failed to send email: {str(e)}")
-            raise e
+            raise RuntimeError("Failed to send email: " + str(e))
