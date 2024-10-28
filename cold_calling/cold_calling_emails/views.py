@@ -19,6 +19,7 @@ from utility import update_yaml,read_yaml
 from datetime import datetime
 
 get_email_details_object=custom_email_content()
+GM=GmailFetcher()
 
 def index(request):
     return render(request, 'index.html')
@@ -82,14 +83,13 @@ def send_email(request):
 
             body=mail_content_handler(recipient_name, company_name, company_work_related)
 
-            GM=GmailFetcher()
             GM.email_sender(recipients,subject, body,attachments=resume_path)
             messages.success(request, f'Mail Sent successfully! at {datetime.now()}')
             # Save the email details in the database
         except Exception as e:
             logging.error("Error sending mail: %s", e)
             messages.error(request, f'An error occurred while sending mail: {str(e)}')
-            return redirect('customize_secrets')
+            return redirect('index')
         try:
             connection = database_connector()
             cursor = connection.cursor()
