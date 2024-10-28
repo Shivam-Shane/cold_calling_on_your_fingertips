@@ -10,7 +10,7 @@ SMTP_PASSWORD: your_gmail_app_password_goes_here
 # Name of the Email Sender
 SENDER_NAME: Shivam
 DRIVER_NAME : "ODBC Driver 17 for SQL Server" # Choose the ODBC driver for your SQL Server
-SERVER_NAME : r"LAPTOP-UG5R2KF5\SQLEXPRESS" #your SQL SERVER name
+SERVER_NAME : LAPTOP-UG5R2KF5\SQLEXPRESS #your SQL SERVER name
 DATABASE_NAME : "cold_calling_emails" # DATABASE NAME
 USERNAME : "cold_calling"  # Replace with the SQL Server username you created
 PASSWORD : "database_password_here"  # Replace with the corresponding password
