@@ -113,11 +113,18 @@ def customize_email(request):
             # Get the resume path from the session
             resume_path = request.session.get('resume_path')
 
-            # Update the email details
-            get_email_details_object.update_email_details(your_name, phone_no, github_link, linkedin_link, portfolio_link, resume_path)
-            messages.success(request, 'Details updated successfully!')
-            # Redirect to the same view after saving to refresh the data
-            return redirect('customize_email')
+            logging.info(your_name)
+            if not your_name and not phone_no:
+                messages.error(request, "Name and Phone No can't be empty!")
+            else:
+                if your_name=="None" or phone_no=="None":
+                    messages.error(request, "Name Or Phone can't be None!")
+                else:
+                    # Update the email details
+                    get_email_details_object.update_email_details(your_name, phone_no, github_link, linkedin_link, portfolio_link, resume_path)
+                    messages.success(request, 'Details updated successfully!')
+                    # Redirect to the same view after saving to refresh the data
+                    return redirect('customize_email')
         except Exception as e:
             logging.error(f"Error occurred while updating email details: {e}")
             messages.error(request, "Failed to update email details.")
