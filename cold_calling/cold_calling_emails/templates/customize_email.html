@@ -58,10 +58,26 @@
             background-color: #45a049;
         }
 
-        .success-message {
-            color: green;
-            font-weight: bold;
-            margin-bottom: 15px;
+                /* Basic alert styles */
+                .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        /* Success message styles */
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        /* Error message styles */
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
     </style>
 </head>
@@ -70,8 +86,14 @@
 <div class="form-container">
     <h2>Customize Email</h2>
 
-    {% if message %}
-        <p class="success-message">{{ message }}</p>
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <form method="POST" action="{% url 'customize_email' %}">

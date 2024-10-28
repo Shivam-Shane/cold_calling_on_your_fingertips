@@ -104,19 +104,24 @@ def send_email(request):
 
 def customize_email(request):
     if request.method == 'POST':
-        your_name = request.POST['your_name']
-        phone_no = request.POST['phone_no']
-        github_link = request.POST['github_link']        
-        linkedin_link = request.POST['linkedin_link']
-        portfolio_link = request.POST['portfolio_link']
-        # Get the resume path from the session
-        resume_path = request.session.get('resume_path')
+        try:
+            your_name = request.POST['your_name']
+            phone_no = request.POST['phone_no']
+            github_link = request.POST['github_link']        
+            linkedin_link = request.POST['linkedin_link']
+            portfolio_link = request.POST['portfolio_link']
+            # Get the resume path from the session
+            resume_path = request.session.get('resume_path')
 
-        # Update the email details
-        get_email_details_object.update_email_details(your_name, phone_no, github_link, linkedin_link, portfolio_link, resume_path)
-        
-        # Redirect to the same view after saving to refresh the data
-        return redirect('customize_email')
+            # Update the email details
+            get_email_details_object.update_email_details(your_name, phone_no, github_link, linkedin_link, portfolio_link, resume_path)
+            messages.success(request, 'Details updated successfully!')
+            # Redirect to the same view after saving to refresh the data
+            return redirect('customize_email')
+        except Exception as e:
+            logging.error(f"Error occurred while updating email details: {e}")
+            messages.error(request, "Failed to update email details.")
+            return redirect('customize_email')
 
     # If not POST, fetch the current details
     result = get_email_details_object.get_email_content()
