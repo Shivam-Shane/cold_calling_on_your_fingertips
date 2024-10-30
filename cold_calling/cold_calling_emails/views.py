@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect
 from gmail_connector import GmailFetcher
 from gmail_content_decomission import mail_content_handler
 from gmail_preview_content import preview_mail
-from database_connector import database_connector
+from database_connector import DatabaseConnector
 from customize_email_content import custom_email_content
 from utility import update_yaml,read_yaml
 from datetime import datetime
@@ -22,9 +22,11 @@ get_email_details_object=custom_email_content()
 GM=GmailFetcher()
 
 def index(request):
+    logging.debug("Rendeding main page of site")
     return render(request, 'index.html')
 
 def preview_email(request):
+    logging.debug("Rendering preview page of email")
     if request.method == 'POST':
         recipient_name=request.POST['recipient_name']
         mail_subject = request.POST['subject']
@@ -66,12 +68,13 @@ def preview_email(request):
             'resume_path': resume_path,  # Pass the file path to the template
 
         }
+        logging.debug("Ending preview page of email")
         return render(request, 'preview.html', context)
 
 def send_email(request):
     if request.method == 'POST':
-        try:
-            logging.info("Sending email")
+        try: 
+            logging.debug(f"Sending email, Sent mail button called")
             subject = request.POST['subject']
             recipients = request.POST['recipients'].split(',')
             recipient_name=request.POST['recipient_name']        
@@ -86,32 +89,42 @@ def send_email(request):
             GM.email_sender(recipients,subject, body,attachments=resume_path)
             messages.success(request, f'Mail Sent successfully! at {datetime.now()}')
             # Save the email details in the database
+            try:
+                cursor=None # Initialize cursor to None
+                with DatabaseConnector() as conn:
+                    cursor = conn.cursor()
+
+                    # Insert the email details into the database
+                    insert_query = """
+                    INSERT INTO dbo.sent_data_details (subject, recipients, recipient_name, company_name, company_work_related, body, resume_path)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """
+                    cursor.execute(insert_query, (subject, ', '.join(recipients), recipient_name, company_name, company_work_related, body, resume_path))
+                    conn.commit()
+                    logging.info("Email details saved to database.")
+            except odbc.Error as e:
+                logging.error("Error saving to database: %s", e)
+                messages.error(request, f'An error occurred while saving to database: {str(e)}')
+                if cursor:  # Check if cursor was created before trying to rollback
+                    conn.rollback()  # Rollback in case of error
+                raise  # Rethrow the exception to propagate it further
+            finally:
+                if cursor:  # Close the cursor only if it was successfully created
+                    cursor.close()  # Ensure cursor is closed
+                logging.debug("Cursor closed.")
+            logging.debug("Send mail closed.")
+
         except Exception as e:
             logging.error("Error sending mail: %s", e)
             messages.error(request, f'An error occurred while sending mail: {str(e)}')
             return redirect('index')
-        try:
-            connection = database_connector()
-            cursor = connection.cursor()
-
-            # Insert the email details into the database
-            insert_query = """
-            INSERT INTO dbo.sent_data_details (subject, recipients, recipient_name, company_name, company_work_related, body, resume_path)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """
-            cursor.execute(insert_query, (subject, ', '.join(recipients), recipient_name, company_name, company_work_related, body, resume_path))
-            connection.commit()
-            logging.info("Email details saved to database.")
-        except odbc.Error as e:
-            logging.error("Error saving to database: %s", e)
-        finally:
-            cursor.close()
-            connection.close()
+        
         return redirect('index')
 
 def customize_email(request):
     if request.method == 'POST':
         try:
+            logging.debug("Updating email details")
             your_name = request.POST['your_name']
             phone_no = request.POST['phone_no']
             github_link = request.POST['github_link']        
@@ -119,8 +132,7 @@ def customize_email(request):
             portfolio_link = request.POST['portfolio_link']
             # Get the resume path from the session
             resume_path = request.session.get('resume_path')
-
-            logging.info(your_name)
+ 
             if not your_name and not phone_no:
                 messages.error(request, "Name and Phone No can't be empty!")
             else:
