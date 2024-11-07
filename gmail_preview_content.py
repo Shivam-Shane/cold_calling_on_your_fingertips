@@ -6,8 +6,7 @@ def preview_mail(recipient_name, company_name, company_work_related):
                 I hope this email finds you well. My name is Shivam.
                 and I am an aspiring Machine Learning Engineer with nearly three years of experience in IT, focusing on developing and deploying scalable machine learning models and workflows. 
                         
-                        I came across your organization {company_name} and was impressed by your innovative work in the field 
-                        of AI/GEN {company_work_related}. 
+                        I came across your organization {company_name}.
                         I would love to explore any opportunities where I could contribute my skills in AI and automation.
                         
                         Throughout my career, I have built expertise in Python, TensorFlow, and Scikit-learn, as well as DevOps tools such as Docker and Kubernetes. In my most recent role at Indus Valley Partners, I led the development of a custom monitoring system that automated the categorization of critical service alerts, reducing response times by 77%. I have also worked on machine learning projects, including an AI-powered image caption generator and an automated text summarization tool, demonstrating a track record of delivering impactful solutions.
