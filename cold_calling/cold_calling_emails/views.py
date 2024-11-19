@@ -248,3 +248,6 @@ def hc_dashboard(request):
     }
     # Render the template with the context
     return render(request, 'hc_dashboard.html', context)
+
+def faq(request):
+    return render(request, 'FAQ.html')
