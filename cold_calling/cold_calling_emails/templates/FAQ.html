@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ: Cold Calling</title>
+    <style>
+        /* Main Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .faq-answer {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .home_button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .home_button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="faq-container">
+    <h2>FAQ: You Asked, We Answered</h2>
+
+    <div class="faq-item">
+        <div class="faq-question">What is Cold Email Automation?</div>
+        <div class="faq-answer">Cold Email Automation is a tool designed to simplify and streamline the process of sending customized cold emails to recruiters. It automates creating, personalizing, and sending emails, helping users increase outreach efficiency and engagement.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">What are the main features of this tool?</div>
+        <div class="faq-answer">
+            The main features include:
+            <ul>
+                <li><strong>Automated Email Sending</strong>: Automatically send emails to targeted recipients.</li>
+                <li><strong>Personalization</strong>: Use placeholders like the recipient's name and company to tailor each email for better engagement.</li>
+                <li><strong>Error Handling</strong>: Detect and handle errors in email content, logging any issues for troubleshooting.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How do I set up Cold Email Automation?</div>
+        <div class="faq-answer">
+            To set up Cold Email Automation:
+            <ol>
+                <li>Clone the repository and follow instructions in the setup guide.</li>
+                <li>Install required dependencies as directed.</li>
+                <li>Enable a Gmail App Password following the provided instructions.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How does the personalization feature work?</div>
+        <div class="faq-answer">The tool allows users to add placeholders (like recipient's name, company, etc.) within email templates. These placeholders are automatically replaced with actual details when sending emails, making each message unique and more engaging.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How are errors handled in the application?</div>
+        <div class="faq-answer">The application includes built-in error handling to manage issues such as unrecognized email content. All errors and actions are logged in the <code>logs/</code> directory, allowing users to review and troubleshoot as needed.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Can I view a demo of the application in action?</div>
+        <div class="faq-answer">Yes, a demo GIF is available in the repository showing Cold Email Automation in action.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Where are email activities and errors logged?</div>
+        <div class="faq-answer">All activities, including email dispatches and errors, are recorded in log files located in the <code>logs/</code> directory. These logs help with troubleshooting and provide an audit trail.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How can I contribute to the project?</div>
+        <div class="faq-answer">Contributions are welcome! You can fork the project, make changes, submit pull requests, report issues, or suggest new features.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Who can I contact for support or questions?</div>
+        <div class="faq-answer">For support or inquiries, contact the project maintainer at sk0551460@gmail.com.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How can I support this project?</div>
+        <div class="faq-answer">Support us by following us on <a href="https://www.linkedin.com/in/shivam-2641081a0/" target="_blank">LinkedIn</a> for updates or contributing via <a href="https://buymeacoffee.com/shivamshane" target="_blank">Buy Me a Coffee</a>.</div>
+    </div>
+
+    <a href="{% url 'index' %}" class="home_button">Home</a>
+</div>
+
+</body>
+</html>
