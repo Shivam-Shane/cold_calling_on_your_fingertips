@@ -133,6 +133,7 @@
         <a href="#">Contact Us</a>
         <a href="{% url 'customize_email' %}">Customize Email</a>
         <a href="{% url 'customize_secrets' %}">Customize Secrets</a>
+        <a href="{% url 'hc_dashboard' %}">H.C Dashboard</a>
 
     </div>
     {% if messages %}
@@ -146,7 +147,7 @@
     {% endif %}
     <div class="container">
         <h1>Cold Calling</h1>
-        <form method="POST" enctype="multipart/form-data" action="{% url 'preview' %}">
+        <form method="POST" enctype="multipart/form-data" id="cold_email_form" action="{% url 'preview' %}">
             {% csrf_token %}
             <label for="subject">Email Subject:</label>
             <input type="text" id="subject" name="subject" placeholder="Enter the email subject" required>
@@ -189,6 +190,17 @@
                 }
             }
         }
+        document.getElementById("cold_email_form").addEventListener("submit", function(event) {
+        const email = document.getElementById("recipients").value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                event.preventDefault(); // Prevents form submission
+            }
+        });
+
+
     </script>
 </body>
 </html>

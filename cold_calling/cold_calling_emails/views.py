@@ -15,10 +15,12 @@ from gmail_content_decomission import mail_content_handler
 from gmail_preview_content import preview_mail
 from database_connector import DatabaseConnector
 from customize_email_content import custom_email_content
+from hc_dashboard_content_fetcher import hc_dashboard_content
 from utility import update_yaml,read_yaml
 from datetime import datetime
 
 get_email_details_object=custom_email_content()
+hc_content_object=hc_dashboard_content()
 GM=GmailFetcher()
 
 def index(request):
@@ -83,7 +85,10 @@ def send_email(request):
             # Get the resume path from the session
             resume_path = request.session.get('resume_path')
             logging.info(f"Retrieved Resume path from session: {resume_path}")
-
+            if resume_path==None:
+                messages.error(request, f'No resume found in session please upload one.! ')
+                logging.debug("No resume found in session, returning to home page.")
+                return redirect('index')
             body=mail_content_handler(recipient_name, company_name, company_work_related)
 
             GM.email_sender(recipients,subject, body,attachments=resume_path)
@@ -232,3 +237,14 @@ def customize_secrets(request):
 
     # Render the template with the context
     return render(request, 'secrets.html', context)
+
+def hc_dashboard(request):
+    logging.debug("Rendering mailed details page")
+    # Fetch the mailed data from the database
+    result = hc_content_object.get_dashboard_content()
+    logging.debug(f"Retrieved mailed data: {result}")
+    context = {
+        "mailed_data": result
+    }
+    # Render the template with the context
+    return render(request, 'hc_dashboard.html', context)
