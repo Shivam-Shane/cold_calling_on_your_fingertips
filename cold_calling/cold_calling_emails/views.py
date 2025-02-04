@@ -34,7 +34,8 @@ def preview_email(request):
         mail_subject = request.POST['subject']
         recipients = request.POST['recipients']
         company_name = request.POST['company_name']
-        company_work_related = request.POST['summary']
+        job_post_url = request.POST['job_post_url']
+        
         # Check if a resume was uploaded
         resume_path = None
 
@@ -57,8 +58,8 @@ def preview_email(request):
         if 'resume' in request.FILES or resume_path:
             request.session['resume_path'] = resume_path
 
-
-        email_content=preview_mail(recipient_name,company_name, company_work_related)
+        email_content=preview_mail(recipient_name,company_name,job_post_url,resume_path)
+        request.session['body']=email_content
         # Pass data to preview template
         context = {
             'subject': mail_subject,
@@ -66,7 +67,6 @@ def preview_email(request):
             'email_content': email_content,
             'recipient_name': recipient_name,  # Pass this to the context
             'company_name': company_name,
-            'summary': company_work_related,
             'resume_path': resume_path,  # Pass the file path to the template
 
         }
@@ -81,7 +81,7 @@ def send_email(request):
             recipients = request.POST['recipients'].split(',')
             recipient_name=request.POST['recipient_name']        
             company_name = request.POST['company_name']
-            company_work_related = request.POST['summary']
+            
             # Get the resume path from the session
             resume_path = request.session.get('resume_path')
             logging.info(f"Retrieved Resume path from session: {resume_path}")
@@ -89,7 +89,7 @@ def send_email(request):
                 messages.error(request, f'No resume found in session please upload one.! ')
                 logging.debug("No resume found in session, returning to home page.")
                 return redirect('index')
-            body=mail_content_handler(recipient_name, company_name, company_work_related)
+            body=request.session.get('body')
 
             GM.email_sender(recipients,subject, body,attachments=resume_path)
             messages.success(request, f'Mail Sent successfully! at {datetime.now()}')
@@ -101,10 +101,10 @@ def send_email(request):
 
                     # Insert the email details into the database
                     insert_query = """
-                    INSERT INTO dbo.sent_data_details (subject, recipients, recipient_name, company_name, company_work_related, body, resume_path)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO dbo.sent_data_details (subject, recipients, recipient_name, company_name,  body, resume_path)
+                    VALUES (?, ?, ?, ?, ?, ?)
                     """
-                    cursor.execute(insert_query, (subject, ', '.join(recipients), recipient_name, company_name, company_work_related, body, resume_path))
+                    cursor.execute(insert_query, (subject, ', '.join(recipients), recipient_name, company_name,  body, resume_path))
                     conn.commit()
                     logging.info("Email details saved to database.")
             except odbc.Error as e:

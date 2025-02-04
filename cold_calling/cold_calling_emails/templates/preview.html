@@ -109,7 +109,7 @@
             <p><strong>Subject:</strong> {{ subject }}</p>
             <p><strong>Recipients:</strong> {{ recipients }}</p>
             <hr>
-            <p>{{ email_content|linebreaksbr }}</p>
+            <p>{{ email_content|safe }}</p>
         </div>
         <form action="{% url 'send_email' %}" method="post">
             {% csrf_token %}

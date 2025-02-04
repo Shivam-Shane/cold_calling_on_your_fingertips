@@ -6,11 +6,13 @@ SMTP_SERVER: smtp.gmail.com
 SMTP_PORT: 587
 # Set up your email credentials
 SMTP_USERNAME: sk0551460@gmail.com
-SMTP_PASSWORD: your_gmail_app_password_goes_here
+SMTP_PASSWORD: htao qlqy ysex zqyb
 # Name of the Email Sender
 SENDER_NAME: Shivam
-DRIVER_NAME : "ODBC Driver 17 for SQL Server" # Choose the ODBC driver for your SQL Server
-SERVER_NAME : LAPTOP-UG5R2KF5\SQLEXPRESS #your SQL SERVER name
-DATABASE_NAME : "cold_calling_emails" # DATABASE NAME
-USERNAME : "cold_calling"  # Replace with the SQL Server username you created
-PASSWORD : "database_password_here"  # Replace with the corresponding password
+DRIVER_NAME: ODBC Driver 17 for SQL Server    # Choose the ODBC driver for your SQL Server
+SERVER_NAME: LAPTOP-UG5R2KF5\SQLEXPRESS  #your SQL SERVER name
+DATABASE_NAME: cold_calling_emails    # DATABASE NAME
+USERNAME: cold_calling     # Replace with the SQL Server username you created
+PASSWORD: Cold@1234321 # Replace with the corresponding password
+GROC_LLM_API: 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
+LLM_MODEL_NAME: llama-3.3-70b-versatile

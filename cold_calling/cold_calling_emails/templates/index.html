@@ -138,7 +138,7 @@
 
     </div>
     {% if messages %}
-    <div>
+    <div id="messages">
         {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                 {{ message }}
@@ -161,16 +161,16 @@
             
             <label for="company_name">Company Name:</label>
             <input type="text" id="company_name" name="company_name" placeholder="Enter the company name in which you are appling to." required>
+            <label for="company_name">Job Post Url</label>
+            <input type="text" id="job_post_url" name="job_post_url" placeholder="Enter the job post link.">
 
-            <label for="summary">Company Skill Summary:</label>
-            <textarea id="summary" name="summary" rows="4" placeholder="Provide what made you to apply to this company if required: Default None"></textarea>
             <label for="resume">Upload Resume:</label>
             <input type="file" name="resume" accept=".pdf,.doc,.docx" ><br>
             <button type="submit">Preview Email</button>
         </form>
     </div>
     <div class="footer">
-        &copy; 2024 Cold Calling Recruiter. All rights reserved.
+        &copy; 2025 Cold Calling Recruiter. All rights reserved.
     </div>
 
     <script>
@@ -200,6 +200,18 @@
                 event.preventDefault(); // Prevents form submission
             }
         });
+        document.addEventListener("DOMContentLoaded", function() {
+    // Select the messages container
+    const messages = document.getElementById("messages");
+    if (messages) {
+        // Set a timeout to fade out and remove the messages
+        setTimeout(function() {
+            messages.style.transition = "opacity 0.5s ease";
+            messages.style.opacity = "0";
+            setTimeout(() => messages.remove(), 500); // Remove after fade out
+        }, 2000); // Adjust time in milliseconds (3000 = 3 seconds)
+    }
+});
 
 
     </script>
