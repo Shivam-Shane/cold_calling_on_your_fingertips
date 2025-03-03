@@ -11,7 +11,6 @@ import pypyodbc as odbc
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from gmail_connector import GmailFetcher
-from gmail_content_decomission import mail_content_handler
 from gmail_preview_content import preview_mail
 from database_connector import DatabaseConnector
 from customize_email_content import custom_email_content
