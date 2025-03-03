@@ -1,14 +1,15 @@
-from utility import read_yaml
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_groq import ChatGroq
 from prompts import *
-config=read_yaml('config.yaml')
+import os
+from dotenv import load_dotenv
 json_resultparser=JsonOutputParser()
+load_dotenv()
 
 llm = ChatGroq(
     temperature=0, 
-    groq_api_key=config.get('GROC_LLM_API'), 
-    model_name=config.get('LLM_MODEL_NAME')
+    groq_api_key=os.getenv('GROC_LLM_API'), 
+    model_name=os.getenv('LLM_MODEL_NAME')
 )
 
 # Define the chain to extract job post details using LLM

@@ -1,30 +1,29 @@
 import pypyodbc as odbc  # type: ignore
 from logger import logging
-from utility import read_yaml
-
+import os
+from dotenv import load_dotenv
 class DatabaseConnector:
     """
     It maintains a single instance of the database connection across the application
     """
     _connection = None #private class-level, indicating that no connection has been established yet
-
+    load_dotenv()
     @classmethod
     def _connect(cls):    #cls: Refers to the class itself, allowing access to class variables and methods
         if cls._connection is None : #connection already exists cls._connection, 
             try:
-                config = read_yaml("config.yaml")
-                DRIVER_NAME = config.get("DRIVER_NAME")
-                SERVER_NAME = config.get("SERVER_NAME")
-                DATABASE_NAME = config.get("DATABASE_NAME")
-                USERNAME = config.get("USERNAME")
-                PASSWORD = config.get("PASSWORD")
+                DRIVER_NAME = os.getenv("DRIVER_NAME")
+                SERVER_NAME = os.getenv("SERVER_NAME")
+                DATABASE_NAME = os.getenv("DATABASE_NAME")
+                DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
+                DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
 
                 connection_string = f"""
-                DRIVER={{{DRIVER_NAME}}};
+                DRIVER={DRIVER_NAME};
                 SERVER={SERVER_NAME};
                 DATABASE={DATABASE_NAME};
-                UID={USERNAME};
-                PWD={PASSWORD};
+                UID={DATABASE_USERNAME};
+                PWD={DATABASE_PASSWORD};
                 """
                 cls._connection = odbc.connect(connection_string)
                 logging.info("Database connection established.")

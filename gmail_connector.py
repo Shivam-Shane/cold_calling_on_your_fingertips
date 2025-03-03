@@ -6,13 +6,12 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import smtplib
-from utility import read_yaml
 import os
+from dotenv import load_dotenv
 
 class GmailFetcher():
     def __init__(self):
-        self.config = read_yaml("config.yaml")
-
+        load_dotenv()
     def email_sender(self, to_emails, subject, body, attachments):
         """
         Sends an email with optional attachments.
@@ -26,8 +25,8 @@ class GmailFetcher():
             # Prepare the email message
             logging.debug("Preparing email message...")
             msg = MIMEMultipart()
-            SENDER_NAME_VALUE = self.config.get('SENDER_NAME')
-            SENDER_EMAIL = self.config.get('SMTP_USERNAME')
+            SENDER_NAME_VALUE = os.getenv('SENDER_NAME')
+            SENDER_EMAIL = os.getenv('SMTP_USERNAME')
             msg['From'] = f'{SENDER_NAME_VALUE} <{SENDER_EMAIL}>'
             msg['To'] = ', '.join(to_emails)
             msg['Subject'] = subject
@@ -65,7 +64,7 @@ class GmailFetcher():
                         raise e
 
             # Send email using SMTP
-            logging.debug(f"Connecting to SMTP server {self.config.get('SMTP_SERVER')}")
+            logging.debug(f"Connecting to SMTP server {os.getenv('SMTP_SERVER')}")
             with smtplib.SMTP(self.config["SMTP_SERVER"], self.config["SMTP_PORT"]) as server:
                 server.starttls()
                 server.login(self.config["SMTP_USERNAME"], self.config["SMTP_PASSWORD"])

@@ -4,75 +4,41 @@ import tempfile
 import os
 import shutil
 
-def read_yaml(path_to_yaml):
+
+def update_env(dict_updated,env_file=".env"):
     """
-    Read a YAML file.
+    Update specified keys in a env file with new values.
 
     Args:
-        path_to_yaml (str): The path to the YAML file.
-
-    Returns:
-        data: The YAML data.
-
-    Raises:
-        ValueError: If the YAML file is empty.
-        Exception: If an error occurs while reading the YAML file.
-    """
-    logging.info(f"Starting to read YAML file: {path_to_yaml}")
-    try:
-        yaml = YAML()
-        with open(path_to_yaml, 'r') as yaml_file:
-            content = yaml.load(yaml_file)
-            if content is None:
-                raise ValueError(f"The YAML file '{path_to_yaml}' is empty.")
-            logging.info(f"YAML file '{path_to_yaml}' of type '{type(content)}' loaded successfully")
-            return content
-    except Exception as e:
-        logging.error(f"Error reading YAML file: {e}")
-        raise e
-
-def update_yaml(path_to_yaml, updates):
-    """
-    Update specified keys in a YAML file with new values.
-
-    Args:
-        path_to_yaml (str): The path to the YAML file.
-        updates (dict): The updates to be made to the YAML file in the form of dict, key:value pairs.
+        Updates: A dict having new key values paires to update
     
     Raises:
-        Exception: If an error occurs while updating the YAML file.
+        Exception: If an error occurs while updating the env file.
     """
-    yaml = YAML()
-    
-    # Create a temporary file for the update
-    try:
-        # Read the YAML file
-        yaml_data = read_yaml(path_to_yaml)
-        logging.info(updates)
-        # Check each key in the dictionary and update if it is present
-        for key, new_value in updates.items():
-           
-            # update the existing value
-            yaml_data[key] = new_value
-            logging.debug(f"Updated '{key}' to '{new_value}'.")
-        
-        # Create a temporary file
-        with tempfile.NamedTemporaryFile(delete=False, mode='w', newline='', encoding='utf-8') as temp_file:
-            temp_file_name = temp_file.name
-            yaml.dump(yaml_data, temp_file)
-            temp_file.flush()
-            os.fsync(temp_file.fileno())
 
-        # Replace the original file with the updated temporary file
-        # Use shutil.copy2() to copy the temp file to the original file path
-        shutil.copy2(temp_file_name, path_to_yaml)
-        os.remove(temp_file_name)  # Clean up the temporary file
-        
-        logging.info(f"YAML file '{path_to_yaml}' updated successfully.")
-    
+    try:
+      
+        # Update environment variables for the current session
+        for key, value in dict_updated.items():
+            os.environ[key] = value
+
+        # Read existing .env content if the file exists
+        existing_vars = {}
+        if os.path.exists(env_file):
+            with open(env_file, "r") as f:
+                for line in f:
+                    if "=" in line:
+                        k, v = line.strip().split("=", 1)
+                        existing_vars[k] = v
+
+        # Merge new variables
+        existing_vars.update(dict_updated)
+
+        # Write updated variables back to the .env file
+        with open(env_file, "w") as f:
+            for key, value in existing_vars.items():
+                f.write(f"{key}={value}\n")
     except Exception as e:
         logging.error(f"Error updating YAML file: {e}")
-        # Cleanup in case of error
-        if os.path.exists(temp_file_name):
-            os.remove(temp_file_name)
+       
         raise e

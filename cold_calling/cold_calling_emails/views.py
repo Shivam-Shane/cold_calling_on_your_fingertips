@@ -16,7 +16,7 @@ from gmail_preview_content import preview_mail
 from database_connector import DatabaseConnector
 from customize_email_content import custom_email_content
 from hc_dashboard_content_fetcher import hc_dashboard_content
-from utility import update_yaml,read_yaml
+from utility import update_env
 from datetime import datetime
 
 get_email_details_object=custom_email_content()
@@ -195,12 +195,11 @@ def customize_secrets(request):
             USERNAME = request.POST['USERNAME']
             PASSWORD = request.POST['PASSWORD']  
             # Update the secrets details
-            update_yaml('config.yaml',
-                        {'SENDER_NAME': SENDER_NAME, 
+            update_env({'SENDER_NAME': SENDER_NAME, 
                         'SMTP_USERNAME': SMTP_USERNAME,
                         'SMTP_PASSWORD': SMTP_PASSWORD, 
                         'DRIVER_NAME': DRIVER_NAME,
-                            'SERVER_NAME': SERVER_NAME, 
+                        'SERVER_NAME': SERVER_NAME, 
                         'DATABASE_NAME': DATABASE_NAME, 
                         'USERNAME': USERNAME, 
                         'PASSWORD': PASSWORD})
@@ -216,23 +215,23 @@ def customize_secrets(request):
 
     else:
         # Prepare the context for secrets
-        config=read_yaml('config.yaml')
-        SENDER_NAME = config['SENDER_NAME']
-        SMTP_USERNAME = config['SMTP_USERNAME']
-        SMTP_PASSWORD = config['SMTP_PASSWORD']        
-        DRIVER_NAME = config['DRIVER_NAME']
-        SERVER_NAME = config['SERVER_NAME']
-        DATABASE_NAME = config['DATABASE_NAME']
-        USERNAME = config['USERNAME']
-        PASSWORD = config['PASSWORD']
+        
+        SENDER_NAME = os.getenv('SENDER_NAME')
+        SMTP_USERNAME = os.getenv('SMTP_USERNAME')
+        SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')        
+        DRIVER_NAME = os.getenv('DRIVER_NAME')
+        SERVER_NAME = os.getenv('SERVER_NAME')
+        DATABASE_NAME = os.getenv('DATABASE_NAME')
+        DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
+        DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
         context = {'SENDER_NAME': SENDER_NAME, 
                      'SMTP_USERNAME': SMTP_USERNAME,
                        'SMTP_PASSWORD': SMTP_PASSWORD, 
                        'DRIVER_NAME': DRIVER_NAME,
                         'SERVER_NAME': SERVER_NAME, 
                        'DATABASE_NAME': DATABASE_NAME, 
-                       'USERNAME': USERNAME, 
-                       'PASSWORD': PASSWORD}
+                       'USERNAME': DATABASE_USERNAME, 
+                       'PASSWORD': DATABASE_PASSWORD}
         
 
     # Render the template with the context
