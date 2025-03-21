@@ -181,6 +181,11 @@ def customize_email(request):
 
     # Render the template with the context
     return render(request, 'customize_email.html', context)
+def mask_sensitive(value, show_chars=4):
+    """Mask sensitive data, showing only last few characters"""
+    if not value:
+        return ""
+    return "*" * (len(value) - show_chars) + value[-show_chars:]
 
 def customize_secrets(request):
     if request.method == 'POST':
@@ -223,6 +228,9 @@ def customize_secrets(request):
         DATABASE_NAME = os.getenv('DATABASE_NAME')
         DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
         DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+        # Mask sensitive data before sending to the frontend
+        SMTP_PASSWORD=mask_sensitive(SMTP_PASSWORD,show_chars=2)
+        DATABASE_PASSWORD=mask_sensitive(DATABASE_PASSWORD)
         context = {'SENDER_NAME': SENDER_NAME, 
                      'SMTP_USERNAME': SMTP_USERNAME,
                        'SMTP_PASSWORD': SMTP_PASSWORD, 
