@@ -65,11 +65,11 @@ class GmailFetcher():
 
             # Send email using SMTP
             logging.debug(f"Connecting to SMTP server {os.getenv('SMTP_SERVER')}")
-            with smtplib.SMTP(self.config["SMTP_SERVER"], self.config["SMTP_PORT"]) as server:
+            with smtplib.SMTP(os.getenv("SMTP_SERVER"), os.getenv("SMTP_PORT")) as server:
                 server.starttls()
-                server.login(self.config["SMTP_USERNAME"], self.config["SMTP_PASSWORD"])
+                server.login(os.getenv("SMTP_USERNAME"), os.getenv("SMTP_PASSWORD"))
                 logging.debug("Authenticating... successfully trying to send email...") 
-                server.sendmail(self.config["SMTP_USERNAME"], to_emails, msg.as_string())
+                server.sendmail(os.getenv("SMTP_USERNAME"), to_emails, msg.as_string())
                 logging.info(f"Email sent to {', '.join(to_emails)}")
 
         except (socket.gaierror, socket.timeout) as net_err:
