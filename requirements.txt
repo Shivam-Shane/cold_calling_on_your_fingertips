@@ -1,6 +1,8 @@
 django==5.1.3 # required for site template
 ruamel.yaml==0.18.6 # required for reading and updaing yaml files
 pypyodbc==1.3.6 # required for connecting to MS SQL Server
-pypdf=5.1.0
-langchain_community=0.3.5
+pypdf==5.1.0
+langchain_community==0.3.5
+langchain_groq
 pdfplumber
+bs4
