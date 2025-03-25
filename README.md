@@ -5,6 +5,7 @@ Cold Email Automation is a tool that streamlines the process of sending personal
 
 ## Features
 - **Automated Email Sending**: Send emails automatically to the recuriters.
+- **Job Post Extraction and Crafting Email** Extract content from the job post url and generate email based on job post and matching details provided in resume. 
 - **Personalization**: Use placeholders for custom fields (e.g., recipient's name, company) to personalize each email.
 
 ## Error Handling:
@@ -49,13 +50,15 @@ Feel free to fork this project, submit pull requests, or report issues. Contribu
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE file for details.
 
 ## Contact
-For any questions or support, please contact the project maintainer at sk0551460@gmail.com
+
+For questions, suggestions, or support, reach out at 
+- **sk0551460@gmail.com** 
+- **shivam.hireme@gmail.com**.
 
 ## Support the Project
-Help us continue developing and improving this project by:
 
-### Following Us on Social Media: 
+Help support continued development and improvements:
 
-Stay updated with our latest work by following us on LinkedIn at [https://www.linkedin.com/in/shivam-2641081a0/](https://www.linkedin.com/in/shivam-hireme/)
-
-Buying Me a Book: https://buymeacoffee.com/shivamshane
+- **Follow on LinkedIn**: Stay connected for updates – [LinkedIn Profile](https://www.linkedin.com/in/shivam-hireme/)
+- **Buy Me a Coffee**: Appreciate the project? [Buy Me a Coffee](https://buymeacoffee.com/shivamshane)
+- **Visit Portfolio**: [Shivam's Portfolio](https://shivam-portfoliio.vercel.app/)
